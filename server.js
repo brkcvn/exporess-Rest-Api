@@ -25,11 +25,10 @@ app.post('/api/cities', function (request, response) {
   var city = request.body;
   for (var index = 0; index < cities.length; index++) {
     if (cities[index].name === city.name) {
-      response.status(500).send({ error: "Bu şehir zaten kayıtlı" });
+      response.status(500).send({ error: 'This city is already registered' });
       return;
     }
   }
-
   cities.push(city);
   response.send(cities);
 });
