@@ -38,11 +38,7 @@ app.put('/api/cities/:id', function (request, response) {
   const updateId = request.params.id;
   const updateCustomer = request.body;
  
-  objIndex = cities.findIndex(function(element) {
-    return element.id == updateId;
-  });
-
-  cities[objIndex] = updateCustomer;
+  cities[updateId] = updateCustomer;
   response.send(cities);
 });
 
