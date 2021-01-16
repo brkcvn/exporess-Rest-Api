@@ -1,12 +1,12 @@
-var express = require('express');
+let express = require('express');
 
 //converts data to json format.
-var bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 
 //sample datas
-var cities = [{ name: 'Istanbul', country: 'Turkey' }, { name: 'Berlin', country: 'Germany' }];
+let cities = [{ id: '0', name: 'Istanbul', country: 'Turkey', isDeleted: true }, { id: '1', name: 'Berlin', country: 'Germany', isDeleted: true }, { id: '2', name: 'Londra', country: 'England', isDeleted: true }];
 
-var app = express();
+let app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -22,9 +22,9 @@ app.get('/api/cities', function (request, response) {
 
 //use post method
 app.post('/api/cities', function (request, response) {
-  var city = request.body;
-  for (var index = 0; index < cities.length; index++) {
-    if (cities[index].name === city.name) {
+  let city = request.body;
+  for (let item of cities) {
+    if (item.id == city.id) {
       response.status(500).send({ error: 'This city is already registered' });
       return;
     }
@@ -32,3 +32,26 @@ app.post('/api/cities', function (request, response) {
   cities.push(city);
   response.send(cities);
 });
+
+// use put method
+app.put('/api/cities/:id', function (request, response) {
+  const updateId = request.params.id;
+  const updateCustomer = request.body;
+ 
+  objIndex = cities.findIndex(function(element) {
+    return element.id == updateId;
+  });
+
+  cities[objIndex] = updateCustomer;
+  response.send(cities);
+});
+
+
+// //use delete method
+app.delete('/api/cities/:id', function (request, response) {
+  const deleteId = request.params.id;
+  delete cities[deleteId];
+  
+  response.send(cities)
+});
+
